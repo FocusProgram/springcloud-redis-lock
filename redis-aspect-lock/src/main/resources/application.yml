@@ -1,0 +1,27 @@
+server:
+  port: 9998
+spring:
+  application:
+    name: redis-aspect-application
+  mvc:
+    contentnegotiation:
+      favor-path-extension: false
+    pathmatch:
+      use-registered-suffix-pattern: true
+      use-suffix-pattern: false
+    static-path-pattern: /**
+  resource:
+    static-locations: classpath:/static/,classpath:/public/
+  redis:
+    database: 0
+    host: 114.55.34.44
+    jedis:
+      pool:
+        max-active: 2000
+        max-idle: 500
+        max-wait: 1000ms
+        min-idle: 50
+    password: root
+    port: 6379
+    timeout: 3000ms
+

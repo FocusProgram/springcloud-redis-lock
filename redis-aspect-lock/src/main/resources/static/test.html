@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>并发测试</title>
+</head>
+
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+<script>
+    let concurrentNum = 100;
+    for (let i = 0; i < concurrentNum; i++) {
+        console.log('发送请求 i=' + i);
+        requestTest(i);
+    }
+
+    function requestTest(i) {
+        // $.ajax({
+        //     url: "http://localhost:8081/testRedis",
+        //     dataType: 'jsonp',
+        //     data: {
+        //         id: i
+        //     },
+        //     success: function () {
+        //         console.log('请求完成！i=' + i);
+        //     },
+        //     error: function () {
+        //         console.log('请求失败');
+        //     }
+        // })
+
+        $.ajax({
+            url: "http://localhost:8081/test",
+            dataType: 'jsonp',
+            success: function () {
+                console.log('请求完成！i=' + i);
+            },
+            error: function () {
+                console.log('请求失败');
+            }
+        })
+    }
+</script>
+<body>
+并发测试
+</body>
+</html>
