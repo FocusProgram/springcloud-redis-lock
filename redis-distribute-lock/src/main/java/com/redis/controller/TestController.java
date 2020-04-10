@@ -9,10 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
+import java.util.concurrent.*;
 
 @RestController
 public class TestController {
@@ -30,9 +27,7 @@ public class TestController {
     @RequestMapping("/testRedis")
     public String testRedis(@RequestParam("id") String id) {
         String oldValue = (String) redisClient.get("user_id");
-
         redisClient.set("user_id", id);
-
         String newValue = (String) redisClient.get("user_id");
         return newValue;
     }
@@ -40,9 +35,8 @@ public class TestController {
     @RequestMapping("/test")
     public String test() throws ExecutionException, InterruptedException {
         int threadNum = 5;
-
-        ExecutorService executorService = Executors.newFixedThreadPool(threadNum);
-
+//        ExecutorService executorService = Executors.newFixedThreadPool(threadNum);
+        ExecutorService executorService = new ThreadPoolExecutor(threadNum, threadNum, 0L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue());
         List<Future> futureList = new ArrayList<>();
         for (int i = 0; i < threadNum; i++) {
             int currentThreadNum = i;
@@ -74,11 +68,9 @@ public class TestController {
 
             futureList.add(future);
         }
-
-//        for(Future future : futureList){
-//            future.get();
-//        }
-
+        for (Future future : futureList) {
+            future.get();
+        }
         return "ok";
     }
 }

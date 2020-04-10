@@ -1,6 +1,5 @@
 -- 获取参数
 local requestIDKey = KEYS[1]
-
 local currentRequestID = ARGV[1]
 
 -- 判断requestID一致性
