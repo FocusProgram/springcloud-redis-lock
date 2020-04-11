@@ -22,6 +22,11 @@ public interface RedisClient {
     void set(String key, Object value);
 
     /**
+     * getset
+     */
+    Object getset(String key, Object value);
+
+    /**
      * set
      */
     void set(String key, Object value, long expireTime, TimeUnit timeUnit);

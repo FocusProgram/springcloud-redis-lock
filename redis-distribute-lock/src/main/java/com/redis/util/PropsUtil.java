@@ -10,7 +10,7 @@ import java.util.Properties;
 
 public final class PropsUtil {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(PropsUtil.class);
+    private static final Logger logger = LoggerFactory.getLogger(PropsUtil.class);
 
     /**
      * 读取配置文件
@@ -28,14 +28,14 @@ public final class PropsUtil {
             props = new Properties();
             props.load(is);
         } catch (IOException e) {
-            LOGGER.error("load propertis file fail", e);
+            logger.error("load propertis file fail", e);
         } finally {
             if (is != null) {
                 try {
                     //:::关闭io流
                     is.close();
                 } catch (IOException e) {
-                    LOGGER.error("close input Stream fail", e);
+                    logger.error("close input Stream fail", e);
                 }
             }
         }

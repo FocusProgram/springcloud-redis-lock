@@ -24,9 +24,15 @@ import java.util.Map;
 @Aspect
 public class RedisLockAspect {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(RedisLockAspect.class);
+    private static final Logger logger = LoggerFactory.getLogger(RedisLockAspect.class);
 
     private final RequestIDMap REQUEST_ID_MAP = new RequestIDMap();
+
+    @Autowired
+    private Environment environment;
+
+    @Autowired
+    private DistributeLock distributeLock;
 
     /**
      * 将ThreadLocal包装成一个对象方便使用
@@ -67,12 +73,6 @@ public class RedisLockAspect {
         }
     }
 
-    @Autowired
-    private Environment environment;
-
-    @Autowired
-    private DistributeLock distributeLock;
-
     @Pointcut("@annotation(com.redis.annotation.RedisLock)")
     public void annotationPointcut() {
     }
@@ -109,7 +109,7 @@ public class RedisLockAspect {
         if (requestID != null) {
             // 当前线程 已经存在requestID
             distributeLock.lockAndRetry(redisLockKey, requestID, annotation.expireTime(), retryCount);
-            LOGGER.info("重入加锁成功 redisLockKey= " + redisLockKey);
+            logger.info("重入加锁成功 redisLockKey= " + redisLockKey);
 
             return true;
         } else {
@@ -119,11 +119,11 @@ public class RedisLockAspect {
             if (newRequestID != null) {
                 // 加锁成功，设置新的requestID
                 REQUEST_ID_MAP.setRequestID(redisLockKey, newRequestID);
-                LOGGER.info("加锁成功 redisLockKey= " + redisLockKey);
+                logger.info("加锁成功 redisLockKey= " + redisLockKey);
 
                 return true;
             } else {
-                LOGGER.info("加锁失败，超过重试次数，直接返回 retryCount= {}", retryCount);
+                logger.info("加锁失败，超过重试次数，直接返回 retryCount= {}", retryCount);
 
                 return false;
             }
@@ -143,10 +143,10 @@ public class RedisLockAspect {
             if (unLockSuccess) {
                 // 移除 ThreadLocal中的数据，防止内存泄漏
                 REQUEST_ID_MAP.removeRequestID(redisLockKey);
-                LOGGER.info("解锁成功 redisLockKey= " + redisLockKey);
+                logger.info("解锁成功 redisLockKey= " + redisLockKey);
             }
         } else {
-            LOGGER.info("解锁失败 redisLockKey= " + redisLockKey);
+            logger.info("解锁失败 redisLockKey= " + redisLockKey);
         }
     }
 

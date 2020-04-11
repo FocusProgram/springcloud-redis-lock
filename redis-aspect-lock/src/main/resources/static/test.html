@@ -14,22 +14,8 @@
     }
 
     function requestTest(i) {
-        // $.ajax({
-        //     url: "http://localhost:8081/testRedis",
-        //     dataType: 'jsonp',
-        //     data: {
-        //         id: i
-        //     },
-        //     success: function () {
-        //         console.log('请求完成！i=' + i);
-        //     },
-        //     error: function () {
-        //         console.log('请求失败');
-        //     }
-        // })
-
         $.ajax({
-            url: "http://localhost:8081/test",
+            url: "http://localhost:8000/distributelock/getlock",
             dataType: 'jsonp',
             success: function () {
                 console.log('请求完成！i=' + i);

@@ -47,6 +47,11 @@ public class RedisClientImpl implements RedisClient {
     }
 
     @Override
+    public Object getset(String key, Object value) {
+        return redisTemplate.opsForValue().getAndSet(key, value);
+    }
+
+    @Override
     public void set(String key, Object value) {
         redisTemplate.opsForValue().set(key, value);
     }
