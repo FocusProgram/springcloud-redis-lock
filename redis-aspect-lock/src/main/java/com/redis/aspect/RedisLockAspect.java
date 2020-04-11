@@ -15,7 +15,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
-
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
@@ -120,11 +119,9 @@ public class RedisLockAspect {
                 // 加锁成功，设置新的requestID
                 REQUEST_ID_MAP.setRequestID(redisLockKey, newRequestID);
                 logger.info("加锁成功 redisLockKey= " + redisLockKey);
-
                 return true;
             } else {
                 logger.info("加锁失败，超过重试次数，直接返回 retryCount= {}", retryCount);
-
                 return false;
             }
         }
